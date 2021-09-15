@@ -1,0 +1,21 @@
+//Name and UIN
+//William Norman 428002797
+/**
+ * Adds two 16-bit values
+ * The chip performs out=a+b
+ * Both inputs a and b are UNSIGNED 
+ * The carry output is intentionally ignored
+ */
+
+
+CHIP Add16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+   // Put you code here:
+   Add6Cin(a = a[0..5], b = b[0..5], cin = false, carry = co1, out = out[0..5]);
+   Add6Cin(a = a[6..11], b = b[6..11], cin = co1, carry = co2, out = out[6..11]);
+   Add6Cin(a[0..3] = a[12..15], a[4..5] = false, b[0..3] = b[12..15], b[4..5] = false, cin = co2, carry = false, out[0..3] = out[12..15]);
+
+}

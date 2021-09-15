@@ -1,0 +1,40 @@
+// Name and UIN
+//William Norman 428002797
+/**
+ * Adds or Subtracts two 10-bit values.
+ * Both inputs a and b are in SIGNED 2s complement format
+ * when sub == 0, the chip performs add i.e. out=a+b
+ * when sub == 1, the chip performs subtract i.e. out=a-b
+ * carry reflects the overflow calculated for 10-bit add/subtract in 2s complement
+ */
+
+CHIP AddSub10 {
+    IN a[10], b[10], sub;
+    OUT out[10],carry;
+
+    PARTS:
+   // Put you code here:
+   //Get 2s complement
+   Negation16(in[0..9] = b[0..9], in[10..15] = false, out[0..9] = notB);
+   
+   //10 bit mux
+   Mux10(a = b[0..9], b = notB, sel = sub, out[0..9] = newB);
+
+   //Now add
+   Add16(a[0..9] = a, a[10..15] = false, b[0..9] = newB, b[10..15] = false, out[0..9] = out, out[9] = msb1, out[10] = msb2);
+
+   //check if neg + neg or pos + pos overflow
+   Xnor(a = a[9], b = b[9], out = both);
+   Not(in = sub, out = add);
+   And(a = both, b = add, out = overflow);
+   //Check if neg + neg
+   And(a = a[9], b = b[9], out = neg);
+   And(a = overflow, b = neg, out = negOv);
+   //check if overflowed
+    Xor(a = msb1, b = msb2, out = x);
+    //select whether pos or neg overflow
+   Mux(a = msb1, b = x, sel = negOv, out = num);
+   //carry if overflow
+    Mux(a = false, b = num, sel = overflow, out = carry);
+
+}
