@@ -1,0 +1,36 @@
+//NAME AND UIN
+//428002797 William Norman
+
+/**
+ * Memory of 512 registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+ 
+// Create the RAM 512 using RAM64 (builtin) Modules
+
+CHIP RAM512 {
+    IN in[16], load, address[9];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    DMux8Way(in=load, sel=address[6..8], a=L1, b=L2, c=L3, d=L4, e=L5, f=L6, g=L7, h=L8);
+
+    RAM64(in=in, load=L1, address=address[0..5], out=q1);
+    RAM64(in=in, load=L2, address=address[0..5], out=q2);
+    RAM64(in=in, load=L3, address=address[0..5], out=q3);
+    RAM64(in=in, load=L4, address=address[0..5], out=q4);
+    RAM64(in=in, load=L5, address=address[0..5], out=q5);
+    RAM64(in=in, load=L6, address=address[0..5], out=q6);
+    RAM64(in=in, load=L7, address=address[0..5], out=q7);
+    RAM64(in=in, load=L8, address=address[0..5], out=q8);
+
+    Mux4Way16(a=q1, b=q2, c=q3, d=q4, sel=address[6..7], out=M1);
+    Mux4Way16(a=q5, b=q6, c=q7, d=q8, sel=address[6..7], out=M2);
+
+    Mux16(a = M1, b = M2, sel = address[8], out = out);
+
+    
+}
