@@ -1,0 +1,25 @@
+//NAME AND UIN
+//William Norman
+//428002797
+
+/**
+ * 8-way Or: 
+ * out = (in[0] or in[1] or ... or in[7])
+ */
+
+CHIP Or8Way {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    Or(a = in[0], b = in[1], out = one);
+    Or(a = in[2], b = in[3], out = two);
+    Or(a = in[4], b = in[5], out = three);
+    Or(a = in[6], b = in[7], out = four);
+
+    Or(a = one, b = two, out = top);
+    Or(a = three, b = four, out = bottom);
+
+    Or(a = top, b = bottom, out = out);
+    // Put your code here:
+}

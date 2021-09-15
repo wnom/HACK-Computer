@@ -1,0 +1,23 @@
+//NAME AND UIN
+//William Norman
+//428002797
+
+/** 
+ * Multiplexor:
+ * out = a if sel == 0
+ *       b otherwise
+ */
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Not(in = sel, out = Nots);
+    And(a = a, b = Nots, out = aANs);
+
+    And(a = b, b = sel, out = aAnds);
+
+    Or(a = aANs, b = aAnds, out = out);
+}
