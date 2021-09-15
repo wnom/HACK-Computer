@@ -1,0 +1,18 @@
+//NAME AND UIN
+//William Norman
+//428002797
+
+/**
+ * Exclusive-Nor gate:
+ * out = (a == b)
+ */
+
+CHIP Xnor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Xor(a = a, b = b, out = aXorb);
+    Not(in = aXorb, out = out);
+}
